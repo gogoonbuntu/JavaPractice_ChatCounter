@@ -13,6 +13,8 @@ public class DataReader {
 		DataReader dr = new DataReader();
 		dr.getData(args[3]);
 	}*/
+	HashMap<String, ArrayList<Message>> messages = new HashMap<String, ArrayList<Message>>();
+	HashMap<String, Integer> indexcounter = new HashMap<String,Integer>();
 	public HashMap<String, ArrayList<Message>> getData(String strDir){
 
 		/* 1. make a file in the directory */
@@ -22,7 +24,7 @@ public class DataReader {
 		File[] files = getListOfFilesFromDirectory(myDirectory);
 		
 		/* 3. String Arraylist to save all the chat data */
-		HashMap<String, ArrayList<Message>> messages = null;
+		
 		for(File f:files)
 		{
 			System.out.println("-------"+f.getName()+"-------");
@@ -52,8 +54,8 @@ public class DataReader {
 
 	private HashMap<String, ArrayList<Message>> readFilesTXT(File[] dataDir){
 
-		HashMap<String, ArrayList<Message>> messages = new HashMap<String, ArrayList<Message>>();
-		HashMap<String, Integer> indexcounter = new HashMap<String,Integer>();
+		//HashMap<String, ArrayList<Message>> messages = new HashMap<String, ArrayList<Message>>();
+		//HashMap<String, Integer> indexcounter = new HashMap<String,Integer>();
 		for(int i=0;i<dataDir.length;i++)
 		{
 			String fileName = dataDir[i].getAbsolutePath();
@@ -80,6 +82,7 @@ public class DataReader {
 					name = m.group(1);
 					time = m.group(2);
 					strMessage = m.group(3);
+					
 					Message msg = new Message(name,time,strMessage);
 					ArrayList<Message> msgList = messages.get(name);
 					//System.out.println("name: "+msg.name+", time: "+msg.time+", \n\""+msg.line+"\"");
@@ -93,8 +96,8 @@ public class DataReader {
 					else
 					{
 						if(!msgList.contains(msg)) {
-							//System.out.println("이전: "+msgList.get(indexcounter.get(name)).name+", "+ msgList.get(indexcounter.get(name)).time+", "+msgList.get(indexcounter.get(name)).line);
-							//System.out.println("현재: "+msg.name+", "+ msg.time+", "+msg.line);
+							System.out.println("이전: "+msgList.get(indexcounter.get(name)).name+", "+ msgList.get(indexcounter.get(name)).time+", "+msgList.get(indexcounter.get(name)).line);
+							System.out.println("현재: "+msg.name+", "+ msg.time+", "+msg.line);
 							if((msgList.get(indexcounter.get(name)).time.equals(msg.time))&&(msgList.get(indexcounter.get(name)).line.equals(msg.line))){
 								System.out.println("EQUAL!! :"+msg.name+", "+msg.time+", "+msg.line);
 							}
@@ -108,15 +111,14 @@ public class DataReader {
 				}
 			}
 			inputStream.close ();
-			
+			System.out.println("---------------파일읽기끝-----------------------");
 		}
 		return messages;
-		
 	}
 	private HashMap<String, ArrayList<Message>> readFilesCSV(File[] dataDir){
 
-		HashMap<String, ArrayList<Message>> messages = new HashMap<String, ArrayList<Message>>();
-		HashMap<String, Integer> indexcounter = new HashMap<String,Integer>();
+		//HashMap<String, ArrayList<Message>> messages = new HashMap<String, ArrayList<Message>>();
+		//HashMap<String, Integer> indexcounter = new HashMap<String,Integer>();
 		for(int i=0;i<dataDir.length;i++)
 		{
 			String fileName = dataDir[i].getAbsolutePath();
@@ -145,9 +147,10 @@ public class DataReader {
 					
 					Message msg = new Message(name,time,strMessage);
 					ArrayList<Message> msgList = messages.get(name);
-					
+					System.out.println("name: "+msg.name+", time: "+msg.time+", \n\""+msg.line+"\"");
 					if(msgList == null)
 					{
+						System.out.println("new msgList");
 						msgList = new ArrayList<Message>();
 						msgList.add(msg);
 						messages.put(name,msgList);
@@ -156,9 +159,12 @@ public class DataReader {
 					else
 					{
 						if(!msgList.contains(msg)) {
-							//System.out.println("이전: "+msgList.get(indexcounter.get(name)).name+", "+ msgList.get(indexcounter.get(name)).time+", "+msgList.get(indexcounter.get(name)).line);
-							//System.out.println("현재: "+msg.name+", "+ msg.time+", "+msg.line);
-							
+							System.out.println("이전: "+msgList.get(
+									indexcounter.get(
+											name)).name+", "
+									+ msgList.get(indexcounter.get(name)).time+", "
+									+ msgList.get(indexcounter.get(name)).line);
+							System.out.println("현재: "+msg.name+", "+ msg.time+", "+msg.line);
 							if((msgList.get(indexcounter.get(name)).time.equals(msg.time))&&(msgList.get(indexcounter.get(name)).line.equals(msg.line))){
 								System.out.println("EQUAL!! :"+msg.name+", "+msg.time+", "+msg.line);
 							}
@@ -171,8 +177,8 @@ public class DataReader {
 					}
 				}
 			}
+			System.out.println("---------------파일읽기끝-----------------------");
 			inputStream.close ();
-			
 		}
 		return messages;
 		

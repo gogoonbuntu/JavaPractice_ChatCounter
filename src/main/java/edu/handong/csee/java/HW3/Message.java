@@ -2,14 +2,18 @@ package edu.handong.csee.java.HW3;
 
 public class Message {
 	String name;
+	String date;
 	String time;
 	String line;
+	String file;
 	
-	public Message(String n, String t, String l) {
+	public Message(String n, String d, String t, String l) {
 		// TODO Auto-generated constructor stub
 		this.name = n;
+		this.date = d;
 		this.time = t;
 		this.line = l;
+		//this.file = f;
 	}
 
 	public String getName() {
@@ -21,7 +25,8 @@ public class Message {
 	}
 
 	public String getTime() {
-		return time;
+		String dateTime = date+", "+time;
+		return dateTime;
 	}
 
 	public void setTime(String time) {

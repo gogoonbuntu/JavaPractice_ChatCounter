@@ -31,7 +31,15 @@ public class DataReader {
 				HashMap<String, ArrayList<Message>> temp = new HashMap<String, ArrayList<Message>>();
 				temp = readFilesTXT(f);
 				for (String keyt : temp.keySet()) {
-					
+					boolean done = false;
+					for (String key : messages.keySet()) {
+						if (keyt.equals(key)) {
+							messages.get(key).addAll(temp.get(keyt));
+							done = true;
+						}
+					}
+					if (done == false)
+						messages.put(keyt, temp.get(keyt));
 				}
 			} else if (f.getName().endsWith(".csv")) {
 				HashMap<String, ArrayList<Message>> temp = new HashMap<String, ArrayList<Message>>();
@@ -61,9 +69,6 @@ public class DataReader {
 
 	private File[] getListOfFilesFromDirectory(File dataDir) {
 
-		for (File file : dataDir.listFiles()) {
-			// System.out.println(file.getAbsolutePath());
-		}
 		return dataDir.listFiles();
 	}
 

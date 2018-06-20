@@ -47,7 +47,11 @@ public class ChatCounter {
 					result.get(msg.name).put(msg.getTime(), msg.getLine());	
 				}
 			}
-
+			/*
+			 * HERE I used hashmap to remove repeated Messages,
+			 * but it has the problem of disability of saving different messages in the same minute.
+			 * but i could not think of better idea.
+			 */
 			for(String key:result.keySet())
 			{
 				for(String key2:result.get(key).keySet())

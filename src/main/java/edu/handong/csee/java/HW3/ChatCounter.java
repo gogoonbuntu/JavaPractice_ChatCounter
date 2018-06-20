@@ -7,6 +7,8 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ChatCounter {
 
@@ -32,23 +34,35 @@ public class ChatCounter {
 			
 			// TODO show the number of files in the path
 			
-
 			// TODO list all files in the path
 			DataReader dataReader = new DataReader();
 			HashMap<String, ArrayList<Message>> messages = dataReader.getData(inputPath);
+			HashMap<String,HashMap<String,String>> result = new HashMap<String,HashMap<String,String>>();
 			for(String key:messages.keySet())
 			{
 				for(Message msg:messages.get(key))
 				{
-					System.out.println(msg.name+", "+msg.time+", "+msg.line);
+					if(!result.containsKey(msg.getName()))
+					{
+						result.put(msg.getName(), new HashMap<String,String>());
+					}
+					result.get(msg.name).put(msg.getTime(), msg.getLine());	
 				}
 			}
-			HashMap<String,Integer> counter = countMessgaes(messages);
+
+			for(String key:result.keySet())
+			{
+				for(String key2:result.get(key).keySet())
+				{
+					System.out.println(key+", "+key2+", "+result.get(key).get(key2));
+				}
+			}
+			
+			HashMap<String,Integer> counter = countMessages(result);
 				
 			List<String> ids = sortByValue(counter);
 				
 			ArrayList<String> linesToWrite = new ArrayList<String>();
-			int i=0;
 			for(String key:ids) {
 				linesToWrite.add(key+","+counter.get(key));
 			}
@@ -127,11 +141,11 @@ public class ChatCounter {
 		return q;
 	}
 	
-	private HashMap<String,Integer> countMessgaes(HashMap<String, ArrayList<Message>> messages) {
+	private HashMap<String,Integer> countMessages(HashMap<String,HashMap<String,String>> result) {
 		HashMap<String, Integer> counter = new HashMap<String, Integer>();
-		for(String key:messages.keySet())
+		for(String key:result.keySet())
 		{
-			counter.put(key, messages.get(key).size());
+			counter.put(key,result.get(key).size());
 		}
 		return counter;
 	}

@@ -31,7 +31,7 @@ dependencies {
 	compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
 	
 	apply plugin : 'application'
-	mainClassName = 'edu.handong.csee.java.hw3.chatcounter
+	mainClassName = 'edu.handong.csee.java.hw3.chatcounter'
 	 
 }
 
